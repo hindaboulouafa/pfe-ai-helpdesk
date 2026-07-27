@@ -1,26 +1,64 @@
 const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+const Ticket = require("../models/Ticket");
+const authMiddleware = require("../middleware/auth");
+const router = express.Router();
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-// Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/tickets", require("./routes/tickets"));
-
-app.get("/", (req, res) => {
-    res.send("API Helpdesk IT — En ligne ✅");
+// Créer un ticket
+router.post("/", authMiddleware, async (req, res) => {
+    try {
+        const { title, description, category, priority } = req.body;
+        const ticket = new Ticket({
+            user: req.user.id,
+            title,
+            description,
+            category,
+            priority
+        });
+        await ticket.save();
+        res.status(201).json(ticket);
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
 });
 
-// Connexion MongoDB
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB connecté ✅"))
-    .catch(err => console.log("Erreur MongoDB :", err));
-
-app.listen(process.env.PORT, () => {
-    console.log(`Serveur démarré sur le port ${process.env.PORT}`);
+// Mes tickets
+router.get("/my", authMiddleware, async (req, res) => {
+    try {
+        const tickets = await Ticket.find({ user: req.user.id }).sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
 });
+
+// Tous les tickets (admin)
+router.get("/all", authMiddleware, async (req, res) => {
+    try {
+        if (req.user.role !== "admin")
+            return res.status(403).json({ message: "Accès refusé" });
+        const tickets = await Ticket.find()
+            .populate("user", "name email")
+            .sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
+// Modifier un ticket (admin)
+router.patch("/:id", authMiddleware, async (req, res) => {
+    try {
+        if (req.user.role !== "admin")
+            return res.status(403).json({ message: "Accès refusé" });
+        const ticket = await Ticket.findByIdAndUpdate(
+            req.params.id,
+            { ...req.body },
+            { new: true }
+        );
+        res.json(ticket);
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+});
+
+module.exports = router;
