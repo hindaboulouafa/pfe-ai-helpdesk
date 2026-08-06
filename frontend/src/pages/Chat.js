@@ -1,70 +1,14 @@
 import { useState } from "react";
 import { chatWithAI } from "../api";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-function Sidebar({ active }) {
-    const navigate = useNavigate();
-    const { logoutUser, user } = useAuth();
-
-    return (
-        <div className="sidebar">
-            <div className="sidebar-logo">
-                <h1>🖥️ Helpdesk IT</h1>
-                <p>Système de support intelligent</p>
-            </div>
-
-            <div className="sidebar-user">
-                <div className="sidebar-avatar">
-                    {user?.name?.charAt(0).toUpperCase()}
-                </div>
-                <div className="sidebar-user-info">
-                    <h4>{user?.name}</h4>
-                    <span>{user?.role === "admin" ? "Administrateur" : "Utilisateur"}</span>
-                </div>
-            </div>
-
-            <nav className="sidebar-nav">
-                <div className="sidebar-section">Menu principal</div>
-
-                <button className={`sidebar-link ${active === "chat" ? "active" : ""}`}
-                        onClick={() => navigate("/chat")}>
-                    <span className="icon">💬</span> Assistant IA
-                </button>
-
-                <button className={`sidebar-link ${active === "new-ticket" ? "active" : ""}`}
-                        onClick={() => navigate("/new-ticket")}>
-                    <span className="icon">🎫</span> Créer un ticket
-                </button>
-
-                <button className={`sidebar-link ${active === "my-tickets" ? "active" : ""}`}
-                        onClick={() => navigate("/my-tickets")}>
-                    <span className="icon">📋</span> Mes tickets
-                </button>
-
-                {user?.role === "admin" && (
-                    <>
-                        <div className="sidebar-section">Administration</div>
-                        <button className={`sidebar-link ${active === "admin" ? "active" : ""}`}
-                                onClick={() => navigate("/admin")}>
-                            <span className="icon">⚙️</span> Tableau de bord
-                        </button>
-                    </>
-                )}
-            </nav>
-
-            <div className="sidebar-footer">
-                <button className="sidebar-logout" onClick={logoutUser}>
-                    <span>🚪</span> Déconnexion
-                </button>
-            </div>
-        </div>
-    );
-}
+import Sidebar from "../Sidebar";
+import { FiSend, FiTag } from "react-icons/fi";
+import { RiRobot2Line } from "react-icons/ri";
 
 export default function Chat() {
     const [messages, setMessages] = useState([
-        { role: "assistant", text: "👋 Bonjour ! Je suis votre assistant IT. Décrivez votre problème et je vais vous aider immédiatement." }
+        { role: "assistant", text: "Bonjour ! Je suis votre assistant IT. Décrivez votre problème et je vais vous aider immédiatement." }
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -81,7 +25,7 @@ export default function Chat() {
             const { data } = await chatWithAI(input);
             setMessages(prev => [...prev, { role: "assistant", text: data.answer }]);
         } catch {
-            setMessages(prev => [...prev, { role: "assistant", text: "❌ L'IA n'est pas disponible. Créez un ticket pour contacter le support." }]);
+            setMessages(prev => [...prev, { role: "assistant", text: "L'IA n'est pas disponible. Créez un ticket pour contacter le support." }]);
         }
         setLoading(false);
     };
@@ -92,21 +36,27 @@ export default function Chat() {
             <div className="main-content">
                 <div className="topbar">
                     <div>
-                        <h2>💬 Assistant IA</h2>
+                        <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <RiRobot2Line /> Assistant IA
+                        </h2>
                         <div style={{ color: "#64748b", fontSize: "0.8rem", marginTop: 2 }}>
                             Posez vos questions IT — disponible 24h/24
                         </div>
                     </div>
-                    <span className="topbar-badge">🟢 En ligne</span>
+                    <span className="topbar-badge" style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#10b981", display: "inline-block" }} />
+            En ligne
+          </span>
                 </div>
 
                 <div className="card" style={{ margin: "1.5rem", display: "flex", flexDirection: "column", height: "calc(100vh - 140px)" }}>
-                    {/* Messages */}
                     <div className="chat-messages">
                         {messages.map((m, i) => (
                             <div key={i} className={`msg-row ${m.role === "user" ? "user" : ""}`}>
                                 <div className={`msg-avatar ${m.role === "user" ? "user" : "ai"}`}>
-                                    {m.role === "user" ? user?.name?.charAt(0).toUpperCase() : "🤖"}
+                                    {m.role === "user"
+                                        ? user?.name?.charAt(0).toUpperCase()
+                                        : <RiRobot2Line size={18} />}
                                 </div>
                                 <div className={`msg-bubble ${m.role === "user" ? "user" : "ai"}`}>
                                     {m.text}
@@ -115,30 +65,29 @@ export default function Chat() {
                         ))}
                         {loading && (
                             <div className="msg-row">
-                                <div className="msg-avatar ai">🤖</div>
-                                <div className="msg-bubble ai" style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                                    <span style={{ animation: "pulse 1s infinite" }}>⏳</span>
-                                    <span style={{ color: "#64748b", fontSize: "0.85rem" }}>L'IA réfléchit...</span>
+                                <div className="msg-avatar ai"><RiRobot2Line size={18} /></div>
+                                <div className="msg-bubble ai" style={{ color: "#64748b", fontSize: "0.85rem" }}>
+                                    L'IA réfléchit...
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* Input */}
                     <div className="chat-footer">
                         <input
                             className="chat-input"
                             value={input}
                             onChange={e => setInput(e.target.value)}
                             onKeyDown={e => e.key === "Enter" && sendMessage()}
-                            placeholder="Décrivez votre problème IT... (Ex: Mon VPN ne fonctionne plus)"
+                            placeholder="Décrivez votre problème IT..."
                         />
-                        <button className="btn-send" onClick={sendMessage}>
-                            ➤ Envoyer
+                        <button className="btn-send" onClick={sendMessage}
+                                style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                            <FiSend /> Envoyer
                         </button>
                         <button onClick={() => navigate("/new-ticket")}
-                                style={{ padding: "12px 16px", borderRadius: 12, border: "2px solid #e2e8f0", background: "white", color: "#475569", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
-                            🎫 Ticket
+                                style={{ padding: "12px 16px", borderRadius: 12, border: "2px solid #e2e8f0", background: "white", color: "#475569", fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+                            <FiTag /> Ticket
                         </button>
                     </div>
                 </div>

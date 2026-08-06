@@ -2,6 +2,9 @@ import { useState } from "react";
 import { login } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import logo from "../assets/supporthub_logo_transparent.png";
+import { RiRobot2Line } from "react-icons/ri";
+import { FiTag, FiBarChart2, FiZap } from "react-icons/fi";
 
 export default function Login() {
     const [form, setForm] = useState({ email: "", password: "" });
@@ -24,25 +27,24 @@ export default function Login() {
         <div className="auth-page">
             {/* Côté gauche */}
             <div className="auth-left">
-                <div style={{ fontSize: 64, marginBottom: 16 }}>🖥️</div>
-                <h1>Helpdesk IT</h1>
+                <img src={logo} alt="SupportHub" style={{ width: 700, marginBottom: 5 }} />
                 <p>Système de support informatique intelligent propulsé par l'intelligence artificielle</p>
 
                 <div className="auth-features">
                     <div className="auth-feature">
-                        <span className="fi">🤖</span>
+                        <span className="fi"><RiRobot2Line /></span>
                         <span>Assistant IA disponible 24h/24</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">🎫</span>
+                        <span className="fi"><FiTag /></span>
                         <span>Gestion intelligente des tickets</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">📊</span>
+                        <span className="fi"><FiBarChart2 /></span>
                         <span>Tableau de bord analytique</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">⚡</span>
+                        <span className="fi"><FiZap /></span>
                         <span>Résolution rapide des incidents</span>
                     </div>
                 </div>
@@ -51,7 +53,7 @@ export default function Login() {
             {/* Côté droit */}
             <div className="auth-right">
                 <div className="auth-form-box">
-                    <h2>Bon retour ! 👋</h2>
+                    <h2>Hello</h2>
                     <p>Connectez-vous à votre espace de support</p>
 
                     {error && <div className="alert alert-error">{error}</div>}

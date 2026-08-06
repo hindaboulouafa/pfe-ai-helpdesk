@@ -2,6 +2,8 @@ import { useState } from "react";
 import { register } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import { RiRocketLine, RiRobot2Line } from "react-icons/ri";
+import { FiCheckCircle, FiLock, FiSmartphone, FiStar } from "react-icons/fi";
 
 export default function Register() {
     const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -24,25 +26,25 @@ export default function Register() {
         <div className="auth-page">
             {/* Côté gauche */}
             <div className="auth-left">
-                <div style={{ fontSize: 64, marginBottom: 16 }}>🚀</div>
+                <div style={{ fontSize: 56, marginBottom: 16 }}><RiRocketLine /></div>
                 <h1>Rejoignez-nous !</h1>
                 <p>Créez votre compte et accédez à un support IT intelligent et réactif</p>
 
                 <div className="auth-features">
                     <div className="auth-feature">
-                        <span className="fi">✅</span>
+                        <span className="fi"><FiCheckCircle /></span>
                         <span>Inscription gratuite et rapide</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">🔐</span>
+                        <span className="fi"><FiLock /></span>
                         <span>Données sécurisées et chiffrées</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">🤖</span>
+                        <span className="fi"><RiRobot2Line /></span>
                         <span>IA prête à vous aider</span>
                     </div>
                     <div className="auth-feature">
-                        <span className="fi">📱</span>
+                        <span className="fi"><FiSmartphone /></span>
                         <span>Accès depuis n'importe où</span>
                     </div>
                 </div>
@@ -51,7 +53,9 @@ export default function Register() {
             {/* Côté droit */}
             <div className="auth-right">
                 <div className="auth-form-box">
-                    <h2>Créer un compte 🎉</h2>
+                    <h2 style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        Créer un compte <FiStar size={20} color="#f59e0b" />
+                    </h2>
                     <p>Remplissez le formulaire pour commencer</p>
 
                     {error && <div className="alert alert-error">{error}</div>}
