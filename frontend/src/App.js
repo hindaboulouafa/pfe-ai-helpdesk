@@ -7,6 +7,8 @@ import NewTicket from "./pages/NewTicket";
 import MyTickets from "./pages/MyTickets";
 import AdminDashboard from "./pages/AdminDashboard";
 import Users from "./pages/Users";
+import Groups from "./pages/Groups";
+import TechnicienDashboard from "./pages/TechnicienDashboard";
 
 function PrivateRoute({ children, adminOnly }) {
   const { user } = useAuth();
@@ -28,6 +30,8 @@ function App() {
             <Route path="/admin" element={<PrivateRoute adminOnly><AdminDashboard /></PrivateRoute>} />
             <Route path="/users" element={<PrivateRoute adminOnly><Users /></PrivateRoute>} />
             <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="/groups" element={<PrivateRoute adminOnly><Groups /></PrivateRoute>} />
+            <Route path="/technicien" element={<PrivateRoute><TechnicienDashboard /></PrivateRoute>} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

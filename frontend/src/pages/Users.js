@@ -46,6 +46,7 @@ export default function Users() {
 
     const roleColor = {
         admin: { bg: "#f5f3ff", color: "#6d28d9", border: "#ddd6fe" },
+        technicien: { bg: "#fff7ed", color: "#c2410c", border: "#fed7aa" },
         user: { bg: "#f0fdf4", color: "#166534", border: "#bbf7d0" }
     };
 
@@ -76,6 +77,8 @@ export default function Users() {
                             { label: "Administrateurs", value: users.filter(u => u.role === "admin").length, Icon: RiVipCrownLine, color: "#6d28d9", bg: "#f5f3ff" },
                             { label: "Utilisateurs", value: users.filter(u => u.role === "user").length, Icon: FiUser, color: "#10b981", bg: "#f0fdf4" },
                             { label: "Ce mois", value: users.filter(u => new Date(u.createdAt).getMonth() === new Date().getMonth()).length, Icon: FiCalendar, color: "#f59e0b", bg: "#fffbeb" },
+                            { label: "Techniciens", value: users.filter(u => u.role === "technicien").length, Icon: FiUsers, color: "#c2410c", bg: "#fff7ed" },
+
                         ].map((s, i) => (
                             <div key={i} className="stat-card">
                                 <div className="stat-icon" style={{ background: s.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -86,6 +89,7 @@ export default function Users() {
                                     <p>{s.label}</p>
                                 </div>
                             </div>
+
                         ))}
                     </div>
 
@@ -134,8 +138,9 @@ export default function Users() {
                                             <select className="form-select"
                                                     value={form.role}
                                                     onChange={e => setForm({ ...form, role: e.target.value })}>
-                                                <option value="user">Utilisateur</option>
-                                                <option value="admin">Administrateur</option>
+                                                <option value="user">👤 Utilisateur</option>
+                                                <option value="technicien">🔧 Technicien IT</option>
+                                                <option value="admin">👑 Administrateur</option>
                                             </select>
                                         </div>
                                     </div>
@@ -198,8 +203,12 @@ export default function Users() {
                                         border: `1px solid ${roleColor[user.role]?.border}`,
                                         display: "inline-flex", alignItems: "center", gap: 5
                                     }}>
-                    {user.role === "admin" ? <><RiVipCrownLine size={13} /> Admin</> : <><FiUser size={13} /> Utilisateur</>}
-                  </span>
+                               {user.role === "admin"
+                        ? <><RiVipCrownLine size={13} /> Admin</>
+                        : user.role === "technicien"
+                            ? <>🔧 Technicien IT</>
+                            : <><FiUser size={13} /> Utilisateur</>}
+                                                        </span>
 
                                     {/* Date */}
                                     <div style={{ color: "#94a3b8", fontSize: "0.8rem", minWidth: 90, textAlign: "right", display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "flex-end" }}>

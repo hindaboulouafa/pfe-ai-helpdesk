@@ -28,6 +28,8 @@ const TicketSchema = new mongoose.Schema({
     },
     aiSuggestion: { type: String },
     adminNote: { type: String },
+    screenshot: { type: String },
+    affectedUser: { type: String },
     comments: [CommentSchema]
 }, { timestamps: true });
 

@@ -17,7 +17,13 @@ export default function Login() {
         try {
             const { data } = await login(form);
             loginUser(data.token, data.user);
-            navigate("/chat");
+            if (data.user.role === "admin") {
+                navigate("/admin");
+            } else if (data.user.role === "technicien") {
+                navigate("/technicien");
+            } else {
+                navigate("/chat");
+            }
         } catch (err) {
             setError("Email ou mot de passe incorrect");
         }
@@ -25,11 +31,9 @@ export default function Login() {
 
     return (
         <div className="auth-page">
-            {/* Côté gauche */}
             <div className="auth-left">
                 <img src={logo} alt="SupportHub" style={{ width: 700, marginBottom: 5 }} />
                 <p>Système de support informatique intelligent propulsé par l'intelligence artificielle</p>
-
                 <div className="auth-features">
                     <div className="auth-feature">
                         <span className="fi"><RiRobot2Line /></span>
@@ -50,10 +54,9 @@ export default function Login() {
                 </div>
             </div>
 
-            {/* Côté droit */}
             <div className="auth-right">
                 <div className="auth-form-box">
-                    <h2>Hello</h2>
+                    <h2>Bonjour</h2>
                     <p>Connectez-vous à votre espace de support</p>
 
                     {error && <div className="alert alert-error">{error}</div>}

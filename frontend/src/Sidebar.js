@@ -1,15 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import logo from "./assets/supporthub_logo_transparent.png";
 import {
-    FiMonitor,
-    FiMessageSquare,
-    FiPlusSquare,
-    FiList,
-    FiSettings,
-    FiUsers,
-    FiLogOut
+    FiMessageSquare, FiPlusSquare,
+    FiList, FiSettings, FiUsers, FiLogOut, FiGrid
 } from "react-icons/fi";
-
 export default function Sidebar({ active }) {
     const navigate = useNavigate();
     const { logoutUser, user } = useAuth();
@@ -17,8 +12,9 @@ export default function Sidebar({ active }) {
     return (
         <div className="sidebar">
             <div className="sidebar-logo">
-                <h1><FiMonitor style={{ marginRight: 8 }} /> Helpdesk IT</h1>
-                <p>Système de support intelligent</p>
+                <div className="sidebar-logo">
+                </div>
+
             </div>
 
             <div className="sidebar-user">
@@ -27,9 +23,14 @@ export default function Sidebar({ active }) {
                 </div>
                 <div className="sidebar-user-info">
                     <h4>{user?.name}</h4>
-                    <span>{user?.role === "admin" ? "Administrateur" : "Utilisateur"}</span>
+                   <span>
+                  {user?.role === "admin" ? "Administrateur"
+                      : user?.role === "technicien" ? "Technicien IT"
+                          : "Utilisateur"}
+                </span>
                 </div>
-            </div>
+
+                 </div>
 
             <nav className="sidebar-nav">
                 <div className="sidebar-section">Menu principal</div>
@@ -59,6 +60,21 @@ export default function Sidebar({ active }) {
                         <button className={`sidebar-link ${active === "users" ? "active" : ""}`}
                                 onClick={() => navigate("/users")}>
                             <FiUsers className="icon" /> Utilisateurs
+                        </button>
+                        <button className={`sidebar-link ${active === "groups" ? "active" : ""}`}
+                                onClick={() => navigate("/groups")}>
+                            <FiGrid className="icon" /> Groupes
+                        </button>
+                    </>
+                )}
+
+
+                {user?.role === "technicien" && (
+                    <>
+                        <div className="sidebar-section">Mon espace</div>
+                        <button className={`sidebar-link ${active === "technicien" ? "active" : ""}`}
+                                onClick={() => navigate("/technicien")}>
+                            <span className="icon">🔧</span> Mes tickets
                         </button>
                     </>
                 )}

@@ -15,7 +15,7 @@ body {
 /* ── SIDEBAR ── */
 .sidebar {
   width: 260px;
-  min-height: 100vh;
+  height: 100vh;
   background: linear-gradient(180deg, #0f172a 0%, #1e3a5f 100%);
   display: flex;
   flex-direction: column;
@@ -23,86 +23,106 @@ body {
   left: 0; top: 0; bottom: 0;
   z-index: 100;
   box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+  overflow: hidden;
+  padding: 28px 20px;
 }
 
+/* ---- LOGO (kept small, centered like before) ---- */
 .sidebar-logo {
-  padding: 1.8rem 1.5rem 1.2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar-logo-img {
+  width: 100px;
+  display: block;
+  margin: 0 auto 6px;
 }
 
 .sidebar-logo h1 {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 
 .sidebar-logo p {
   color: rgba(255,255,255,0.45);
-  font-size: 0.75rem;
-  margin-top: 4px;
-  margin-left: 30px;
+  font-size: 0.72rem;
+  margin-top: 2px;
 }
 
+/* ---- PROFILE ROW (Pinterest layout: avatar + name/email side by side) ---- */
 .sidebar-user {
-  padding: 1.2rem 1.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .sidebar-avatar {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: white;
   flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.15);
 }
 
 .sidebar-user-info h4 {
   color: white;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
 .sidebar-user-info span {
-  color: rgba(255,255,255,0.45);
-  font-size: 0.75rem;
+  color: #7fa8ff;
+  font-size: 0.78rem;
 }
 
+/* ---- DIVIDER ---- */
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.12);
+  margin: 4px 0 16px;
+  flex-shrink: 0;
+}
+
+/* ---- NAV (scrollable, bigger spacing like Pinterest) ---- */
 .sidebar-nav {
   flex: 1;
-  padding: 1rem 0.75rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .sidebar-section {
   color: rgba(255,255,255,0.3);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 0.5rem 0.75rem;
-  margin-top: 0.5rem;
+  padding: 10px 6px 6px;
 }
 
 .sidebar-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  color: rgba(255,255,255,0.65);
+  gap: 16px;
+  padding: 14px 10px;
+  border-radius: 12px;
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
@@ -110,7 +130,6 @@ body {
   background: none;
   width: 100%;
   text-align: left;
-  margin-bottom: 2px;
 }
 
 .sidebar-link:hover {
@@ -124,21 +143,29 @@ body {
   box-shadow: 0 4px 12px rgba(59,130,246,0.3);
 }
 
-.sidebar-link .icon { font-size: 1.1rem; width: 20px; text-align: center; }
+.sidebar-link .icon {
+  font-size: 1.2rem;
+  width: 22px;
+  text-align: center;
+  color: #5ac8fa;
+}
 
+/* ---- FOOTER (logout, separated like the last Pinterest group) ---- */
 .sidebar-footer {
-  padding: 1rem 0.75rem;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 16px;
+  margin-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
 }
 
 .sidebar-logout {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
+  gap: 16px;
+  padding: 14px 10px;
+  border-radius: 12px;
+  color: rgba(255,255,255,0.6);
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s;
   border: none;

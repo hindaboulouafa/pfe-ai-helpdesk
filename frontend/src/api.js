@@ -19,3 +19,10 @@ export const categorizeTicket = (description) => API.post("/ai/categorize", { de
 export const getUsers = () => API.get("/users");
 export const createUser = (data) => API.post("/users", data);
 export const deleteUser = (id) => API.delete(`/users/${id}`);
+export const getGroups = () => API.get("/groups");
+export const createGroup = (data) => API.post("/groups", data);
+export const updateGroup = (id, data) => API.patch(`/groups/${id}`, data);
+export const deleteGroup = (id) => API.delete(`/groups/${id}`);
+export const uploadScreenshot = (formData) => API.post("/upload", formData, {
+    headers: { "Content-Type": "multipart/form-data" }
+});
